@@ -1,0 +1,30 @@
+title: POST Request Referencing PHP Session Upload Progress (CVE-2026-109618 / CVE-2026-109619)
+id: 0b7e9f52-3d1c-4a8e-8f61-7c2a9d4e1096
+status: experimental
+description: |
+    Detects POST requests where the URI / query string references the PHP session upload-progress
+    field name. Most access logs do not record bodies; pair with the WAF/IDS rules in this repository
+    for body inspection. Any hit should be triaged against applications known to use upload progress.
+references:
+    - https://www.cve.org/CVERecord?id=CVE-2026-109618
+    - https://www.cve.org/CVERecord?id=CVE-2026-109619
+    - https://www.php.net/manual/en/session.upload-progress.php
+author: Lexsah, BG
+date: 2026-10-21
+tags:
+    - attack.initial-access
+    - attack.t1190
+    - cve.2026-109618
+    - cve.2026-109619
+logsource:
+    category: webserver
+detection:
+    selection_method:
+        cs-method: 'POST'
+    selection_marker:
+        - c-uri|contains: 'PHP_SESSION_UPLOAD_PROGRESS'
+        - c-uri-query|contains: 'PHP_SESSION_UPLOAD_PROGRESS'
+    condition: all of selection_*
+falsepositives:
+    - Applications implementing PHP upload progress bars
+level: medium
