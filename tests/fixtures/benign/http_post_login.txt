@@ -1,0 +1,7 @@
+POST /login.php HTTP/1.1
+Host: www.example
+User-Agent: Mozilla/5.0
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 33
+
+user=alice&password=correct-horse
