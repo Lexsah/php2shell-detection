@@ -1,0 +1,10 @@
+# php2shell-detection — Suricata rules (alert-only)
+# CVE-2026-109618 / CVE-2026-109619 — PHP session.upload_progress
+# Generic, already-public network indicators. No exploit logic.
+# SID range: 9109618xx (local). Tune $HTTP_SERVERS / $HTTP_PORTS as needed.
+
+alert http any any -> $HTTP_SERVERS any (msg:"PHP2SHELL php2shell tooling User-Agent (CVE-2026-109618/CVE-2026-109619)"; flow:established,to_server; http.user_agent; content:"php2shell"; nocase; classtype:web-application-attack; reference:cve,2026-109618; reference:cve,2026-109619; sid:910961801; rev:1; metadata:created_at 2026_10_21, signature_severity Major;)
+
+alert http any any -> $HTTP_SERVERS any (msg:"PHP2SHELL multipart POST with PHP_SESSION_UPLOAD_PROGRESS field (CVE-2026-109618/CVE-2026-109619)"; flow:established,to_server; http.method; content:"POST"; http.content_type; content:"multipart/form-data"; nocase; http.request_body; content:"name="; nocase; content:"PHP_SESSION_UPLOAD_PROGRESS"; nocase; distance:0; within:32; classtype:web-application-attack; reference:cve,2026-109618; reference:cve,2026-109619; sid:910961802; rev:1; metadata:created_at 2026_10_21, signature_severity Minor;)
+
+alert http any any -> $HTTP_SERVERS any (msg:"PHP2SHELL repeated PHP_SESSION_UPLOAD_PROGRESS fields in one request (CVE-2026-109618/CVE-2026-109619)"; flow:established,to_server; http.method; content:"POST"; http.content_type; content:"multipart/form-data"; nocase; http.request_body; content:"PHP_SESSION_UPLOAD_PROGRESS"; nocase; content:"PHP_SESSION_UPLOAD_PROGRESS"; nocase; distance:0; classtype:web-application-attack; reference:cve,2026-109618; reference:cve,2026-109619; sid:910961803; rev:1; metadata:created_at 2026_10_21, signature_severity Major;)
