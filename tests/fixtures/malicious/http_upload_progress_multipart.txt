@@ -1,0 +1,16 @@
+POST /upload.php HTTP/1.1
+Host: victim.example
+User-Agent: Mozilla/5.0
+Content-Type: multipart/form-data; boundary=----bt-fixture-boundary
+Content-Length: 280
+
+------bt-fixture-boundary
+Content-Disposition: form-data; name="PHP_SESSION_UPLOAD_PROGRESS"
+
+synthetic-fixture
+------bt-fixture-boundary
+Content-Disposition: form-data; name="file"; filename="hello.txt"
+Content-Type: text/plain
+
+hello world
+------bt-fixture-boundary--
