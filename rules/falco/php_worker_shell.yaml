@@ -1,0 +1,20 @@
+# php2shell-detection — Falco rule (defensive, alert-only)
+# Generic post-exploitation signal: shell / downloader spawned by a PHP worker.
+- list: php_worker_binaries
+  items: [php-fpm, php-fpm8.2, php-fpm8.3, php-fpm8.4, php-fpm8.5, php-cgi, apache2, httpd]
+
+- list: php_suspicious_children
+  items: [sh, bash, dash, zsh, nc, ncat, socat, curl, wget, python3, perl]
+
+- rule: Shell Spawned by PHP Worker
+  desc: >
+    A PHP worker (php-fpm / php-cgi / mod_php) spawned a shell or downloader.
+    Generic web RCE signal, relevant to CVE-2026-109618 / CVE-2026-109619.
+  condition: >
+    spawned_process and proc.pname in (php_worker_binaries)
+    and proc.name in (php_suspicious_children)
+  output: >
+    Shell spawned by PHP worker (user=%user.name parent=%proc.pname cmdline=%proc.cmdline
+    container=%container.name image=%container.image.repository)
+  priority: CRITICAL
+  tags: [host, container, mitre_execution, T1059.004, CVE-2026-109618, CVE-2026-109619]
