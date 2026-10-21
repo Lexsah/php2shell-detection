@@ -1,0 +1,5 @@
+# Example: harden an official PHP image (fpm, apache or cli variants)
+FROM php:8.4-fpm
+COPY 99-php2shell-mitigation.ini /usr/local/etc/php/conf.d/99-php2shell-mitigation.ini
+# Fail the build if the mitigation is not effective
+RUN php -r 'exit(filter_var(ini_get("session.upload_progress.enabled"), FILTER_VALIDATE_BOOLEAN) ? 1 : 0);'
