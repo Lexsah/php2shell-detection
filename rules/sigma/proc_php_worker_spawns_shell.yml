@@ -1,0 +1,42 @@
+title: Shell Spawned by PHP Worker Process (post-exploitation hint)
+id: 9c4a1e77-2b5d-4f3a-a1c8-5e6f7d8b1097
+status: experimental
+description: |
+    Detects a shell or common recon/download utility spawned by php-fpm, php-cgi or an Apache/mod_php
+    worker. Generic post-exploitation signal for web RCE classes, including CVE-2026-109618 / CVE-2026-109619.
+references:
+    - https://www.cve.org/CVERecord?id=CVE-2026-109618
+    - https://www.cve.org/CVERecord?id=CVE-2026-109619
+author: Lexsah, BG
+date: 2026-10-21
+tags:
+    - attack.execution
+    - attack.t1059.004
+    - attack.persistence
+    - attack.t1505.003
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_parent:
+        - ParentImage|contains: 'php-fpm'
+        - ParentImage|endswith:
+            - '/php-cgi'
+            - '/apache2'
+            - '/httpd'
+    selection_child:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+            - '/dash'
+            - '/zsh'
+            - '/nc'
+            - '/ncat'
+            - '/curl'
+            - '/wget'
+            - '/python3'
+            - '/perl'
+    condition: all of selection_*
+falsepositives:
+    - Applications legitimately calling exec()/system() (image processing, mail, cron wrappers) - baseline first
+level: high
