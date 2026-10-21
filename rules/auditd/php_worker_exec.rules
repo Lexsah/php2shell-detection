@@ -1,0 +1,6 @@
+## php2shell-detection — auditd hint (defensive)
+## Log every execve by the web server user. Adjust uid (33 = www-data on Debian/Ubuntu,
+## 48 = apache on RHEL, 82 = www-data on Alpine/docker php images).
+## Then hunt: ausearch -k php_worker_exec -i | grep -E 'comm="(sh|bash|dash|nc|curl|wget)"'
+-a always,exit -F arch=b64 -S execve -F uid=33 -k php_worker_exec
+-a always,exit -F arch=b32 -S execve -F uid=33 -k php_worker_exec
