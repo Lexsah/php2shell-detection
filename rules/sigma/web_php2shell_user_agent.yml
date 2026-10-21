@@ -1,0 +1,23 @@
+title: php2shell Tooling User-Agent (CVE-2026-109618 / CVE-2026-109619)
+id: 6f1d2c3a-6a43-4f0e-9f3b-2b1f6c0a1091
+status: experimental
+description: Detects HTTP requests whose User-Agent contains "php2shell", a string associated with public tooling targeting PHP session.upload_progress (CVE-2026-109618 / CVE-2026-109619).
+references:
+    - https://www.cve.org/CVERecord?id=CVE-2026-109618
+    - https://www.cve.org/CVERecord?id=CVE-2026-109619
+author: Lexsah, BG
+date: 2026-10-21
+tags:
+    - attack.initial-access
+    - attack.t1190
+    - cve.2026-109618
+    - cve.2026-109619
+logsource:
+    category: webserver
+detection:
+    selection:
+        cs-user-agent|contains: 'php2shell'
+    condition: selection
+falsepositives:
+    - Internal scanners or red team exercises using the same User-Agent
+level: high
