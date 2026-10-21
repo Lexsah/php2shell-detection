@@ -1,0 +1,3 @@
+; Shared hosting fallback (CGI/FastCGI/FPM only, NOT mod_php): place as .user.ini in the docroot.
+; Picked up after user_ini.cache_ttl (default 300 s). Prefer the server-level options when you can.
+session.upload_progress.enabled = Off
