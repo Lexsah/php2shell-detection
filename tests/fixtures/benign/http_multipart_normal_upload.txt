@@ -1,0 +1,16 @@
+POST /avatar.php HTTP/1.1
+Host: www.example
+User-Agent: Mozilla/5.0
+Content-Type: multipart/form-data; boundary=----bt-fixture-boundary
+Content-Length: 253
+
+------bt-fixture-boundary
+Content-Disposition: form-data; name="title"
+
+holiday
+------bt-fixture-boundary
+Content-Disposition: form-data; name="photo"; filename="cat.jpg"
+Content-Type: image/jpeg
+
+not-really-a-jpeg
+------bt-fixture-boundary--
